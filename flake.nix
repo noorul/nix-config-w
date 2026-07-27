@@ -41,7 +41,7 @@
           system.keyboard.remapCapsLockToControl = true;
 
           system.defaults.dock.persistent-apps = [
-            "/Applications/Emacs.app"
+            "/Users/noorul/Applications/Emacs.app"
             "/Applications/Firefox.app"
             "/Applications/Slack.app"
             "/Applications/Brave Browser.app"
@@ -179,7 +179,7 @@
                     "$HOME/github.com/noorul/notebook/bin"
                     "$HOME/go/bin"
                     "/opt/homebrew/bin"
-                    "/Applications/Emacs.app/Contents/MacOS/bin"
+                    "$HOME/Applications/Emacs.app/Contents/MacOS/bin"
                     "/usr/local/texlive/2026/bin/universal-darwin"
                   ];
                 programs.bat.enable = true;
