@@ -28,6 +28,9 @@
         { users.users.noorul.home = "/Users/noorul"; }
         ({ pkgs, ... }: {
           nix.package = pkgs.nixVersions.latest;
+          # Corporate TLS-inspection proxy (Zscaler) root CA, so Nix (both the
+          # CLI and nix-daemon) can verify HTTPS substituters/fetchers.
+          security.pki.certificateFiles = [ ./certs/zscaler-root-ca.pem ];
           # here go the darwin preferences and config items
           programs.zsh.enable = true;
           environment.shells = [ pkgs.bash pkgs.zsh ];
