@@ -107,6 +107,7 @@
               "ncurses"
               "pkg-config"
               "ripgrep"
+              "skopeo"
               "sqlite"
               "tree-sitter"
               "yq"
