@@ -175,7 +175,7 @@
                   zizmor
                 ];
                 home.sessionVariables = {
-                  CLICLOLOR = 1;
+                  CLICOLOR = 1;
                   EDITOR = "emacsclient";
                 };
                 home.sessionPath =
