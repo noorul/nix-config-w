@@ -172,6 +172,7 @@
                   terraform-ls
                   tree
                   trivy
+                  watch
                   zizmor
                 ];
                 home.sessionVariables = {
