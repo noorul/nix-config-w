@@ -158,6 +158,7 @@
                   less
                   nil
                   nixfmt
+                  nodejs
                   pandoc
                   ripgrep
                   (rust-bin.stable.latest.default.override {
@@ -178,6 +179,12 @@
                 home.sessionVariables = {
                   CLICOLOR = 1;
                   EDITOR = "emacsclient";
+                  # npm's default global prefix is node's own install prefix, which for
+                  # nixpkgs' nodejs is a read-only /nix/store path, so `npm install -g`
+                  # fails with EACCES. Redirect it to a writable dir in $HOME. Set via env
+                  # rather than a home-manager-managed ~/.npmrc so that file stays
+                  # writable for `npm login` / `npm config set`.
+                  NPM_CONFIG_PREFIX = "${config.home.homeDirectory}/.npm-global";
                 };
                 home.sessionPath =
                   [ "$HOME/.local/bin"
@@ -186,6 +193,8 @@
                     "/opt/homebrew/bin"
                     "$HOME/Applications/Emacs.app/Contents/MacOS/bin"
                     "/usr/local/texlive/2026/bin/universal-darwin"
+                    # Where `npm install -g` puts its binaries; see NPM_CONFIG_PREFIX below.
+                    "${config.home.homeDirectory}/.npm-global/bin"
                   ];
                 programs.bat.enable = true;
                 programs.bat.config.theme = "TwoDark";
