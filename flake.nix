@@ -132,7 +132,31 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             users.noorul.imports = [
-              ({ pkgs, config, ... }: {
+              ({ pkgs, config, ... }:
+              let
+                # pdf-tools' epdfinfo server, built by Nix against nixpkgs' poppler.
+                # The Elisp side still comes from MELPA (package.el); pdf-info finds
+                # this binary via `executable-find` before trying its own copy.
+                # Without it, pdf-tools' autobuild runs `brew install poppler ...`,
+                # and those undeclared formulae are fragile: they are not managed by
+                # the `homebrew.brews` list above, so a cleanup of unlisted formulae
+                # would remove them and break the binary.
+                #
+                # Built standalone from pdf-tools' server/ directory rather than
+                # taken from emacsPackages.pdf-tools, which would byte/native-compile
+                # the Elisp against nixpkgs' emacs (unused here; Emacs is installed
+                # separately) just to extract this one C binary.
+                epdfinfo = pkgs.stdenv.mkDerivation {
+                  pname = "epdfinfo";
+                  inherit (pkgs.emacsPackages.pdf-tools) version src;
+                  sourceRoot = "source/server";
+                  nativeBuildInputs = with pkgs; [ autoreconfHook pkg-config ];
+                  buildInputs = with pkgs; [ poppler libpng zlib ];
+                  installPhase = ''
+                    install -Dm755 epdfinfo $out/bin/epdfinfo
+                  '';
+                };
+              in {
                 # Don't change this when you change package input. Leave it alone.
                 home.stateVersion = "24.05";
                 xdg.enable = true;
@@ -146,6 +170,7 @@
                   curl
                   datree
                   dos2unix
+                  epdfinfo
                   fd
                   github-cli
                   glow
